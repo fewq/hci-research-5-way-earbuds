@@ -2,12 +2,18 @@ import RPi.GPIO as GPIO
 import time
 from pygame import mixer
 
+up = 37
+down = 35
+left = 33
+right = 31
+center = 29
+
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # left
-GPIO.setup(38, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # center
-GPIO.setup(37, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # up
-GPIO.setup(35, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # right
-GPIO.setup(33, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	# down
+GPIO.setup(up, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(down, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(left, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(right, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(center, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
 
 mixer.init() # pygame mixer setup
 playlist = ["playlist/song1.mp3", "playlist/song2.mp3", "playlist/song3.mp3"]
@@ -19,13 +25,13 @@ volume = 0.5 #volume is between 0 and 1
 
 while True:
 	time.sleep(0.2) # set a delay between commands
-	if GPIO.input(40) == GPIO.HIGH:
+	if GPIO.input(left) == GPIO.HIGH:
 		print("LEFT")
 		index = (index-1)%3 #go back 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		print(index)
-	elif GPIO.input(38) == GPIO.HIGH:
+	elif GPIO.input(center) == GPIO.HIGH:
 		print("CENTER")
 		if first_song_played == False:
 			mixer.music.load(playlist[index])
@@ -40,7 +46,7 @@ while True:
 				mixer.music.unpause()
 				pause_state = False
 				print("unpaused")
-	elif GPIO.input(37) == GPIO.HIGH:
+	elif GPIO.input(up) == GPIO.HIGH:
 		print("UP")
 		new_volume = volume + 0.2 
 		if new_volume > 1: # check that the new volume is within bounds
@@ -49,13 +55,13 @@ while True:
 			volume = new_volume
 			mixer.music.set_volume(volume)
 		print("Volume set to: ", volume)
-	elif GPIO.input(35) == GPIO.HIGH:
+	elif GPIO.input(right) == GPIO.HIGH:
 		print("RIGHT")
 		index = (index+1)%3 #go forward 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		print(index)
-	elif GPIO.input(33) == GPIO.HIGH:
+	elif GPIO.input(down) == GPIO.HIGH:
 		print("DOWN")
 		new_volume = volume - 0.2 
 		if new_volume < 0: # check that the new volume is within bounds

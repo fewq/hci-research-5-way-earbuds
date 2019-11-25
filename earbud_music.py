@@ -20,7 +20,7 @@ mixer.init() # pygame mixer setup
 playlist = ["playlist/song1.mp3", 
 			"playlist/song2.mp3", 
 			"playlist/song3.mp3",
-			"playlist/song3.mp3"]
+			"playlist/song4.mp3"]
 index = 0
 
 # action song sounds
@@ -84,14 +84,14 @@ while True:
 		print("DOWN; Volume: {:.2f}".format(volume))
 	elif GPIO.input(left) == GPIO.HIGH:
 		play_change_sound()
-		index = (index-1)%3 #go back 1 song
+		index = (index-1)%4 #go back 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		pause_state = False
 		print("LEFT; ", playlist[index])
 	elif GPIO.input(right) == GPIO.HIGH:
 		play_change_sound()
-		index = (index+1)%3 #go forward 1 song
+		index = (index+1)%4 #go forward 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		pause_state = False

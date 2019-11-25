@@ -21,10 +21,10 @@ index = 0
 
 first_song_played = False # this is the intial setup
 pause_state = False # toggle between pause and unpause
-volume = 0.5 #volume is between 0 and 1
+volume = 0.3 #volume is between 0 and 1
 
 while True:
-	time.sleep(0.3) # set a delay between commands
+	time.sleep(0.5) # set a delay between commands
 	if GPIO.input(left) == GPIO.HIGH:
 		print("LEFT")
 		index = (index-1)%3 #go back 1 song
@@ -48,7 +48,7 @@ while True:
 				print("unpaused")
 	elif GPIO.input(up) == GPIO.HIGH:
 		print("UP")
-		new_volume = volume + 0.1 
+		new_volume = volume + 0.3 
 		if new_volume > 1: # check that the new volume is within bounds
 			pass
 		else:
@@ -63,7 +63,7 @@ while True:
 		print(index)
 	elif GPIO.input(down) == GPIO.HIGH:
 		print("DOWN")
-		new_volume = volume - 0.1
+		new_volume = volume - 0.3
 		if new_volume < 0: # check that the new volume is within bounds
 			pass
 		else:

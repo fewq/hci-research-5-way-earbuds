@@ -24,6 +24,12 @@ index = 0
 action_sound = mixer.Sound("action_sounds/menu_accept.wav")
 action_sound.set_volume(1)
 
+vol_sound = mixer.Sound("action_sounds/armsrace_kill_01.wav")
+vol_sound.set_volume(1)
+
+change_song_sound = mixer.Sound("action_sounds/beepclear.wav")
+change_song_sound.set_volume(1)
+
 
 first_song_played = False # this is the intial setup
 pause_state = False # toggle between pause and unpause
@@ -39,10 +45,16 @@ def play_action_sound():
 	action_sound.play()
 	time.sleep(pre_action_delay)
 	mixer.music.unpause()
+	
+def play_change_sound():
+	mixer.music.pause()
+	change_song_sound.play()
+	time.sleep(pre_action_delay)
+	mixer.music.unpause()
 
 while True:
 	if GPIO.input(up) == GPIO.HIGH:
-		action_sound.play()
+		vol_sound.play()
 		time.sleep(pre_action_delay)
 		new_volume = volume + 0.1
 		if new_volume > max_volume: # check that the new volume is within bounds
@@ -52,7 +64,7 @@ while True:
 			mixer.music.set_volume(volume)
 		print("UP; Volume: {:.2f}".format(volume))
 	elif GPIO.input(down) == GPIO.HIGH:
-		action_sound.play()
+		vol_sound.play()
 		time.sleep(pre_action_delay)
 		new_volume = volume - 0.1
 		if new_volume < min_volume: # check that the new volume is within bounds
@@ -62,14 +74,14 @@ while True:
 			mixer.music.set_volume(volume)
 		print("DOWN; Volume: {:.2f}".format(volume))
 	elif GPIO.input(left) == GPIO.HIGH:
-		play_action_sound()
+		play_change_sound()
 		index = (index-1)%3 #go back 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		pause_state = False
 		print("LEFT; ", playlist[index])
 	elif GPIO.input(right) == GPIO.HIGH:
-		play_action_sound()
+		play_change_sound()
 		index = (index+1)%3 #go forward 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()

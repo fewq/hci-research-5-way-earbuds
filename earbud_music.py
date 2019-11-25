@@ -19,6 +19,8 @@ mixer.init() # pygame mixer setup
 playlist = ["playlist/song1.mp3", "playlist/song2.mp3", "playlist/song3.mp3"]
 index = 0
 
+
+
 first_song_played = False # this is the intial setup
 pause_state = False # toggle between pause and unpause
 volume = 0.69 #volume is between 0 and 1

@@ -31,8 +31,8 @@ volume = 0.31 #volume is between 0 and 1
 max_volume = 0.51
 min_volume = 0.01
 
-pre_action_delay = 0.5
-post_action_delay = 0.5
+pre_action_delay = 0.4
+post_action_delay = 0.4
 
 def play_action_sound():
 	mixer.music.pause()
@@ -42,7 +42,8 @@ def play_action_sound():
 
 while True:
 	if GPIO.input(up) == GPIO.HIGH:
-		play_action_sound()
+		action_sound.play()
+		time.sleep(pre_action_delay)
 		new_volume = volume + 0.1
 		if new_volume > max_volume: # check that the new volume is within bounds
 			pass
@@ -51,7 +52,8 @@ while True:
 			mixer.music.set_volume(volume)
 		print("UP; Volume: {:.2f}".format(volume))
 	elif GPIO.input(down) == GPIO.HIGH:
-		play_action_sound()
+		action_sound.play()
+		time.sleep(pre_action_delay)
 		new_volume = volume - 0.1
 		if new_volume < min_volume: # check that the new volume is within bounds
 			pass

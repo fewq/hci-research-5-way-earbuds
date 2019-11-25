@@ -17,7 +17,10 @@ GPIO.setup(center, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # pygame mixer sound setup
 mixer.init() # pygame mixer setup
-playlist = ["playlist/song1.mp3", "playlist/song2.mp3", "playlist/song3.mp3"]
+playlist = ["playlist/song1.mp3", 
+			"playlist/song2.mp3", 
+			"playlist/song3.mp3",
+			"playlist/song3.mp3"]
 index = 0
 
 # action song sounds

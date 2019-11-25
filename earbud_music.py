@@ -21,51 +21,60 @@ playlist = ["playlist/song1.mp3", "playlist/song2.mp3", "playlist/song3.mp3"]
 index = 0
 
 # action song sounds
-pause_sound = mixer.Sound("action_sounds/pause.oga")
-pause_sound.set_volume(1)
-vol_sound = mixer.Sound("action_sounds/volume_change.oga")
-vol_sound.set_volume(1)
-song_change_sound = mixer.Sound("action_sounds/song_change.oga")
-song_change_sound.set_volume(1)
+action_sound = mixer.Sound("action_sounds/pause.oga")
+action_sound.set_volume(1)
+
 
 first_song_played = False # this is the intial setup
 pause_state = False # toggle between pause and unpause
-volume = 0.39 #volume is between 0 and 1
+volume = 0.10 #volume is between 0 and 1
+max_volume = 0.20
+min_volume = 0.01
+
+pre_action_delay = 0.5
+post_action_delay = 0.5
 
 
 while True:
 	if GPIO.input(up) == GPIO.HIGH:
-		vol_sound.play()
-		new_volume = volume + 0.3
-		if new_volume > 1: # check that the new volume is within bounds
+		action_sound.play()
+		time.sleep(pre_action_delay)
+		new_volume = volume + 0.05
+		if new_volume > max_volume: # check that the new volume is within bounds
 			pass
 		else:
 			volume = new_volume
 			mixer.music.set_volume(volume)
 		print("UP; Volume: {:.2f}".format(volume))
 	elif GPIO.input(down) == GPIO.HIGH:
-		vol_sound.play()
-		new_volume = volume - 0.3
-		if new_volume < 0: # check that the new volume is within bounds
+		action_sound.play()
+		time.sleep(pre_action_delay)
+		new_volume = volume - 0.05
+		if new_volume < min_volume: # check that the new volume is within bounds
 			pass
 		else:
 			volume = new_volume
 			mixer.music.set_volume(volume)
 		print("DOWN; Volume: {:.2f}".format(volume))
 	elif GPIO.input(left) == GPIO.HIGH:
-		song_change_sound.play()
+		action_sound.play()
+		time.sleep(pre_action_delay)
 		index = (index-1)%3 #go back 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
+		pause_state = False
 		print("LEFT; ", playlist[index])
 	elif GPIO.input(right) == GPIO.HIGH:
-		song_change_sound.play()
+		action_sound.play()
+		time.sleep(pre_action_delay)
 		index = (index+1)%3 #go forward 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
+		pause_state = False
 		print("RIGHT; ", playlist[index])
 	elif GPIO.input(center) == GPIO.HIGH:
-		pause_sound.play()
+		action_sound.play()
+		time.sleep(pre_action_delay)
 		if first_song_played == False:
 			mixer.music.load(playlist[index])
 			mixer.music.play()
@@ -81,4 +90,4 @@ while True:
 				pause_state = False
 				print("CENTER; unpaused")
 	# set delay after all events
-	time.sleep(0.4)
+	time.sleep(post_action_delay)

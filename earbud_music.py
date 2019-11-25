@@ -30,6 +30,9 @@ action_sound.set_volume(1)
 vol_sound = mixer.Sound("action_sounds/armsrace_kill_01.wav")
 vol_sound.set_volume(1)
 
+max_vol_sound = mixer.Sound("action_sounds/weapon_cant_buy.wav")
+max_vol_sound.set_volume(1)
+
 change_song_sound = mixer.Sound("action_sounds/beepclear.wav")
 change_song_sound.set_volume(1)
 
@@ -62,6 +65,7 @@ while True:
 		time.sleep(pre_action_delay)
 		new_volume = volume + volume_granularity
 		if new_volume > max_volume: # check that the new volume is within bounds
+			max_vol_sound.play()
 			pass
 		else:
 			volume = new_volume
@@ -72,6 +76,7 @@ while True:
 		time.sleep(pre_action_delay)
 		new_volume = volume - volume_granularity
 		if new_volume < min_volume: # check that the new volume is within bounds
+			max_vol_sound.play()
 			pass
 		else:
 			volume = new_volume

@@ -39,10 +39,10 @@ change_song_sound.set_volume(1)
 
 first_song_played = False # this is the intial setup
 pause_state = False # toggle between pause and unpause
-volume = 0.41 #volume is between 0 and 1
-max_volume = 0.91
+volume = 0.469 #volume is between 0 and 1
+max_volume = 1
 min_volume = 0.01
-volume_granularity = 0.2
+volume_granularity = 0.066
 
 pre_action_delay = 0.4
 post_action_delay = 0.4
@@ -62,7 +62,7 @@ def play_change_sound():
 while True:
 	if GPIO.input(up) == GPIO.HIGH:
 		vol_sound.play()
-		time.sleep(pre_action_delay)
+		time.sleep(0.1)
 		new_volume = volume + volume_granularity
 		if new_volume > max_volume: # check that the new volume is within bounds
 			max_vol_sound.play()
@@ -73,7 +73,7 @@ while True:
 		print("UP; Volume: {:.2f}".format(volume))
 	elif GPIO.input(down) == GPIO.HIGH:
 		vol_sound.play()
-		time.sleep(pre_action_delay)
+		time.sleep(0.1)
 		new_volume = volume - volume_granularity
 		if new_volume < min_volume: # check that the new volume is within bounds
 			max_vol_sound.play()

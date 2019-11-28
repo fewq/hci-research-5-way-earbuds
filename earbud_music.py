@@ -44,8 +44,10 @@ max_volume = 1
 min_volume = 0.01
 volume_granularity = 0.066
 
-pre_action_delay = 0.4
-post_action_delay = 0.4
+pre_action_delay = 0.3
+post_action_delay = 0.3
+
+f = open("10_5.txt", "a")
 
 def play_action_sound():
 	mixer.music.pause()
@@ -70,6 +72,7 @@ while True:
 		else:
 			volume = new_volume
 			mixer.music.set_volume(volume)
+		print("UP; Volume: {:.2f}".format(volume), file=f)
 		print("UP; Volume: {:.2f}".format(volume))
 	elif GPIO.input(down) == GPIO.HIGH:
 		vol_sound.play()
@@ -82,12 +85,14 @@ while True:
 			volume = new_volume
 			mixer.music.set_volume(volume)
 		print("DOWN; Volume: {:.2f}".format(volume))
+		print("DOWN; Volume: {:.2f}".format(volume), file = f)
 	elif GPIO.input(left) == GPIO.HIGH:
 		play_change_sound()
 		index = (index-1)%4 #go back 1 song
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		pause_state = False
+		print("LEFT; ", playlist[index], file=f)
 		print("LEFT; ", playlist[index])
 	elif GPIO.input(right) == GPIO.HIGH:
 		play_change_sound()
@@ -95,6 +100,7 @@ while True:
 		mixer.music.load(playlist[index])
 		mixer.music.play()
 		pause_state = False
+		print("RIGHT; ", playlist[index], file = f)
 		print("RIGHT; ", playlist[index])
 	elif GPIO.input(center) == GPIO.HIGH:
 		play_action_sound()
@@ -102,15 +108,18 @@ while True:
 			mixer.music.load(playlist[index])
 			mixer.music.play()
 			first_song_played = True
+			print("CENTER; play", file = f)
 			print("CENTER; play")
 		elif first_song_played == True:
 			if pause_state == False:
 				mixer.music.pause()
 				pause_state = True
+				print("CENTER; paused", file = f)
 				print("CENTER; paused")
 			elif pause_state == True:
 				mixer.music.unpause()
 				pause_state = False
+				print("CENTER; unpaused", file = f)
 				print("CENTER; unpaused")
 	# set delay after all events
 	time.sleep(post_action_delay)
